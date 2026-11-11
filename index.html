@@ -44,16 +44,6 @@
       </nav>
     </header>
 
-    <!-- "wave blur" used by the cursor haze on the cover objects (src/main.js) -->
-    <svg class="svg-defs" aria-hidden="true" focusable="false">
-      <!-- static noise: an animated one is re-rendered on the CPU every frame (heavy);
-           the wave still moves with the cursor + swell (main.js) -->
-      <filter id="haze-wave" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.007 0.012" numOctaves="2" seed="7" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="78" xChannelSelector="R" yChannelSelector="G" result="waved" />
-        <feGaussianBlur in="waved" stdDeviation="13" />
-      </filter>
-    </svg>
 
     <main id="top">
       <!-- ============ HERO (assets from Figma "1 PORTFOLIO - COVER") ============ -->
@@ -112,7 +102,7 @@
             <div class="par"><div class="in"><img class="fill" src="/assets/cover/image-card.webp" alt="" /></div></div>
           </div>
 
-          <div class="obj" data-vis="72 66 66 83" data-depth="1.4" style="left: 1445px; top: -102px; width: 554px; height: 554px">
+          <div class="obj" data-vis="72 66 66 83" data-depth="1.4" data-up="0.45" style="left: 1445px; top: -102px; width: 554px; height: 554px">
             <div class="par"><div class="in"><img class="fill fill--cover" src="/assets/cover/figma-logo.webp" alt="" /></div></div>
           </div>
 
@@ -423,7 +413,7 @@
             </div>
             <div class="pw__row pw__row--two">
               <figure class="pw__media pw__media--top" style="--r: 16/10" data-slide="left" data-src="/assets/work/accomy/home.webp"><div class="pw__in"></div></figure>
-              <figure class="pw__media" style="--r: 16/10" data-slide="right" data-src="/assets/work/accomy/components.webp"><div class="pw__in"></div></figure>
+              <figure class="pw__media" style="--r: 16/10" data-slide="right" data-src="/assets/work/accomy/kit.webp" data-alt="Accomy booking UI components"><div class="pw__in"></div></figure>
             </div>
           </div>
         </article>

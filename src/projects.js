@@ -15,8 +15,9 @@
  *    flow      screens in order, with a caption each (src may     { items: [{ src, title, text }] }
  *              be a list: a small stack of screens per step)
  *    diagram   how the pieces connect                            { items: [{ title, text }] }
- *    stage     pictures floating at different depths            { ratio, bg?, items: [{ src, x, y, w, d, phone?, card?, rot? }] }
- *              (card: a UI card with the deck's blue shadow, rot: its tilt in degrees)
+ *    stage     pictures floating at different depths            { ratio, bg?, kit?, items: [{ src, x, y, w, d, phone?, card?, rot? }] }
+ *              (card: a UI card with the deck's blue shadow, rot: its tilt in degrees; d: 0 = still;
+ *              kit: a tidy board whose pieces rise in one after another)
  *    pair      two pictures drifting apart                       { items: [{ src, browser?, name? }] }
  *    wall      SHOWCASE wall (pages / screens drifting up, down) { key }
  *    marquee   SHOWCASE rows of posts gliding sideways           { key }
@@ -486,15 +487,33 @@ export const PROJECTS = [
         type: "stage",
         label: "Components",
         title: "A kit of reusable pieces behind every screen.",
-        ratio: "16/10",
-        bg: "linear-gradient(160deg, #f1f2f6 0%, #f7f7fa 100%)",
+        // (the deck's "Accomy App · Screens" board, straightened: same columns, same crop)
+        ratio: "16/9",
+        kit: true,
+        bg: "radial-gradient(36% 42% at 18% 90%, rgba(196, 181, 253, 0.5), transparent 70%), radial-gradient(30% 32% at 55% 50%, rgba(187, 247, 208, 0.5), transparent 70%), radial-gradient(34% 40% at 95% 5%, rgba(251, 207, 232, 0.55), transparent 70%), #f6f6f9",
         items: [
-          { src: `${W}/accomy/c-card-grid.webp`, x: 3, y: 6, w: 23, d: 0.7 },
-          { src: `${W}/accomy/c-card-list.webp`, x: 31, y: 4, w: 35, d: 1.2 },
-          { src: `${W}/accomy/c-modal.webp`, x: 72, y: 8, w: 24, d: 0.5 },
-          { src: `${W}/accomy/c-progress.webp`, x: 6, y: 52, w: 36, d: 1.4 },
-          { src: `${W}/accomy/c-details.webp`, x: 47, y: 42, w: 22, d: 0.8 },
-          { src: `${W}/accomy/c-brands.webp`, x: 74, y: 52, w: 21, d: 1.1 },
+          { src: `${W}/accomy/kit/room-guests.webp`, x: -6.8, y: -4.32, w: 17.5, d: 0 },
+          { src: `${W}/accomy/kit/hotel-list.webp`, x: -1.6, y: 16.8, w: 32.36, d: 0 },
+          { src: `${W}/accomy/kit/refund-timeline.webp`, x: -1.66, y: 41.11, w: 32.54, d: 0 },
+          { src: `${W}/accomy/kit/gallery.webp`, x: -1.66, y: 54.59, w: 32.54, d: 0 },
+          { src: `${W}/accomy/kit/search-currency.webp`, x: -2.62, y: 85.06, w: 34.63, d: 0 },
+          { src: `${W}/accomy/kit/main-guest.webp`, x: -1.57, y: 94.1, w: 17.7, d: 0 },
+          { src: `${W}/accomy/kit/date-picker-top.webp`, x: 11.77, y: -24.92, w: 19.11, d: 0 },
+          { src: `${W}/accomy/kit/stay-dates.webp`, x: 16.77, y: 95.39, w: 14.16, d: 0 },
+          { src: `${W}/accomy/kit/fee-breakdown.webp`, x: 32.63, y: -1.91, w: 21.02, d: 0 },
+          { src: `${W}/accomy/kit/stay-bar.webp`, x: 32.63, y: 34.61, w: 45.93, d: 0 },
+          { src: `${W}/accomy/kit/price-change.webp`, x: 32.63, y: 45.82, w: 22.99, d: 0 },
+          { src: `${W}/accomy/kit/date-picker.webp`, x: 32.94, y: 77.42, w: 19.11, d: 0 },
+          { src: `${W}/accomy/kit/hotel-brands.webp`, x: 53.18, y: 77.42, w: 25.32, d: 0 },
+          { src: `${W}/accomy/kit/hotel-grid.webp`, x: 54.48, y: -9.44, w: 14.15, d: 0 },
+          { src: `${W}/accomy/kit/add-guest.webp`, x: 54.48, y: 24.63, w: 14.15, d: 0 },
+          { src: `${W}/accomy/kit/hotel-card.webp`, x: 56.99, y: 45.86, w: 21.56, d: 0 },
+          { src: `${W}/accomy/kit/room-photo.webp`, x: 70.07, y: -5.83, w: 17.79, d: 0 },
+          { src: `${W}/accomy/kit/btn-apply.webp`, x: 69.47, y: 24.74, w: 10.3, d: 0 },
+          { src: `${W}/accomy/kit/inputs.webp`, x: 89.47, y: -3.4, w: 17.53, d: 0 },
+          { src: `${W}/accomy/kit/search-results.webp`, x: 80.97, y: 21.92, w: 22.63, d: 0 },
+          { src: `${W}/accomy/kit/btn-add-account.webp`, x: 79.5, y: 93.32, w: 11.05, d: 0 },
+          { src: `${W}/accomy/kit/btn-cancel.webp`, x: 91.62, y: 93.32, w: 12.54, d: 0 },
         ],
       },
       {

@@ -1014,51 +1014,6 @@ body.is-loading .hero__scroll {
   color: rgba(20, 20, 20, 0.38);
 }
 
-/* cursor haze: each object carries a blurred copy of itself, revealed only in a
-   soft circle around the cursor (main.js) — so only the object goes hazy, never
-   the empty background */
-.haze-copy {
-  --hp: 140px; /* room for the spill (object px) */
-  position: absolute;
-  inset: calc(var(--hp) * -1);
-  display: none;
-  pointer-events: none;
-  opacity: 0;
-  filter: url(#haze-wave) brightness(1.08);
-  /* its own layer: the blurred twin is rendered once; following the cursor then
-     only moves the mask / swell instead of re-running the filter */
-  will-change: transform;
-  /* the blurred part swells out from the cursor, spilling past the object's edge */
-  transform-origin: calc(var(--hx, 50%) + var(--hp)) calc(var(--hy, 50%) + var(--hp));
-  scale: var(--hs, 1);
-  -webkit-mask-image: radial-gradient(circle calc(var(--hr, 100px) * 1.35) at calc(var(--hx, 50%) + var(--hp)) calc(var(--hy, 50%) + var(--hp)), #000 0%, #000 45%, transparent 100%);
-  mask-image: radial-gradient(circle calc(var(--hr, 100px) * 1.35) at calc(var(--hx, 50%) + var(--hp)) calc(var(--hy, 50%) + var(--hp)), #000 0%, #000 45%, transparent 100%);
-}
-
-.haze-pad {
-  position: absolute;
-  inset: var(--hp);
-}
-
-/* the sharp object is cut away where its blurred twin takes over */
-.haze-src {
-  position: absolute;
-  inset: 0;
-}
-
-.haze-src.is-hazed {
-  will-change: transform; /* moving the cut-out then doesn't re-run the object's drop shadows on the CPU */
-  -webkit-mask-image: radial-gradient(circle var(--hr, 100px) at var(--hx, 50%) var(--hy, 50%), rgba(0, 0, 0, var(--ha, 1)) 0%, rgba(0, 0, 0, var(--ha, 1)) 40%, #000 100%);
-  mask-image: radial-gradient(circle var(--hr, 100px) at var(--hx, 50%) var(--hy, 50%), rgba(0, 0, 0, var(--ha, 1)) 0%, rgba(0, 0, 0, var(--ha, 1)) 40%, #000 100%);
-}
-
-.svg-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-}
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -1828,6 +1783,8 @@ body.is-loading .hero__scroll {
 .marquee__row {
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease-out);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
 }
@@ -1841,6 +1798,15 @@ body.is-loading .hero__scroll {
 
 .marquee__row[data-dir="right"] .marquee__track {
   animation-name: marquee-right;
+}
+
+/* (waits for its pictures: see buildMarquee) */
+.marquee__row:not(.is-ready) .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__row.is-ready {
+  opacity: 1;
 }
 
 .marquee__item {
@@ -2600,6 +2566,24 @@ body.is-loading .hero__scroll {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 30px 40px rgba(20, 20, 50, 0.2));
+}
+
+/* kit: a board of UI pieces, straight and tidy, rising in one after another */
+.pb__stage--kit .stage__item {
+  opacity: 0;
+  translate: 0 18px;
+  transition:
+    opacity 0.8s var(--ease-out) calc(var(--i) * 45ms),
+    translate 1s var(--ease-out) calc(var(--i) * 45ms);
+}
+
+.pd__content.is-live .pb.is-in .pb__stage--kit .stage__item {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.pb__stage--kit .stage__item > img {
+  filter: drop-shadow(0 10px 22px rgba(70, 60, 140, 0.12));
 }
 
 /* a UI card lifted off the screen: solid light-blue edge + soft blue shadow (as in the deck) */

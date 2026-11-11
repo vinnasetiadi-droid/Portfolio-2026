@@ -111,6 +111,16 @@ export function buildMarquee(el, { rows }) {
       return `<div class="marquee__row" data-dir="${i % 2 ? "right" : "left"}">${label}<div class="marquee__track" style="--dur: ${r.dur || 80}s">${set}${set}</div></div>`;
     })
     .join("");
+  // a row only shows (and starts gliding) once all its pictures are in → never a gap
+  for (const row of el.querySelectorAll(".marquee__row")) {
+    const imgs = row.querySelectorAll(".marquee__item");
+    let left = imgs.length;
+    const done = () => --left === 0 && row.classList.add("is-ready");
+    for (const img of imgs) {
+      img.addEventListener("load", done, { once: true });
+      img.addEventListener("error", done, { once: true });
+    }
+  }
 }
 
 /** A browser window around a picture / video (the page name in its bar). */

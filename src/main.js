@@ -182,9 +182,19 @@ function bumpTargets() {
   const ey = h * 1.02;
   const erx = Math.max(halfW * 1.2 + 30, 240);
   const ery = ey - headTop + 36;
-  // …and the greeting above her head
+  // …and the greeting above her head: its words (not the full-width lines they sit in,
+  // which would push everything at the sides out of that band too)
   const hr = hero.getBoundingClientRect();
-  const gr = greet.getBoundingClientRect();
+  const words = $$(".line__in", greet).map((el) => el.getBoundingClientRect()); // (horizontal extent)
+  const rows = $$(".line", greet).map((el) => el.getBoundingClientRect()); // (vertical: the words may still sit below, waiting to rise)
+  const gr = words.length
+    ? {
+        left: Math.min(...words.map((r) => r.left)),
+        right: Math.max(...words.map((r) => r.right)),
+        top: Math.min(...rows.map((r) => r.top)),
+        bottom: Math.max(...rows.map((r) => r.bottom)),
+      }
+    : greet.getBoundingClientRect();
   const g = { l: gr.left - hr.left - 36, r: gr.right - hr.left + 36, t: gr.top - hr.top - 30, b: gr.bottom - hr.top + 24 };
   const inEllipse = (t) => {
     const nx = (t.x - ex) / (erx + t.hw * 0.75);
@@ -244,6 +254,19 @@ function bumpTargets() {
       t.y = Math.min(h - EDGE - t.hh, Math.max(EDGE + t.hh, t.y));
     }
   }
+
+  // last: an object marked data-up (a share of its height) rises past the top edge,
+  // just far enough to clear whatever still sits under it — the rest stays put
+  targets.forEach((t, i) => {
+    const up = (parseFloat(t.o.el.dataset.up) || 0) * 2 * t.hh;
+    if (!up) return;
+    targets.forEach((b, j) => {
+      if (b === t || b.y < t.y || together.has(Math.min(i, j) * 100 + Math.max(i, j))) return;
+      if (t.hw + b.hw + 14 - Math.abs(t.x - b.x) <= 0) return; // not under it
+      const overlap = t.y + t.hh + 14 - (b.y - b.hh);
+      if (overlap > 0) t.y = Math.max(EDGE + t.hh - up, t.y - overlap);
+    });
+  });
   return { targets, diag };
 }
 
@@ -403,7 +426,6 @@ function updateFly(scroll) {
 
 gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
-  updateHaze();
   updateFly(lenis.scroll);
   scrollytell(lenis.scroll);
   cursor3d?.setScrollProgress(Math.min(1, lenis.scroll / cursorFly.end));
@@ -413,103 +435,6 @@ gsap.ticker.add((time) => {
   }
 });
 gsap.ticker.lagSmoothing(0);
-
-/* -------------------------------------------------------------------------- */
-/* Cursor haze: every cover object gets a blurred twin, masked to a soft      */
-/* circle at the cursor. So only the part of an object within reach of the    */
-/* cursor goes hazy — the background stays sharp and clean.                   */
-/* -------------------------------------------------------------------------- */
-const HAZE_R = 130; // screen px
-const hazeObjs = $$(".stage--fg .obj")
-  .filter((obj) => !obj.querySelector("[data-cursor3d]")) // the WebGL cursor can't be cloned
-  .map((obj) => {
-    const inEl = $(".in", obj);
-    // wrap the object's own content (so it can be cut away under the cursor)…
-    const src = document.createElement("div");
-    src.className = "haze-src";
-    src.append(...inEl.children);
-    // …and give it a blurred, wavy twin
-    const copy = document.createElement("div");
-    copy.className = "haze-copy";
-    copy.setAttribute("aria-hidden", "true");
-    // (the twin's box is padded all round, so the blur that spills past the object's
-    // edge isn't cut off square by the box its mask is painted in)
-    const pad = document.createElement("div");
-    pad.className = "haze-pad";
-    for (const child of [...src.children]) pad.appendChild(child.cloneNode(true));
-    copy.appendChild(pad);
-    inEl.append(src, copy);
-    return { obj, inEl, src, copy, h: 0, shown: false };
-  });
-const hazePointer = { x: -9999, y: -9999, on: false };
-let hazeLast = performance.now();
-
-window.addEventListener("pointermove", (e) => {
-  hazePointer.x = e.clientX;
-  hazePointer.y = e.clientY;
-  hazePointer.on = e.pointerType === "mouse";
-});
-document.documentElement.addEventListener("pointerleave", () => (hazePointer.on = false));
-
-let hazeSettled = true;
-let hazeReady = reduceMotion; // (switched on by the intro)
-const hazeAt = { x: 0, y: 0, scroll: 0 };
-
-function updateHaze() {
-  const now = performance.now();
-  const k = 1 - Math.exp(-((now - hazeLast) / 1000) * 8);
-  hazeLast = now;
-  // nothing moved and every haze has finished fading → no reads, no writes this frame
-  const moved = hazePointer.x !== hazeAt.x || hazePointer.y !== hazeAt.y || lenis.scroll !== hazeAt.scroll;
-  if (!moved && hazeSettled) return;
-  Object.assign(hazeAt, { x: hazePointer.x, y: hazePointer.y, scroll: lenis.scroll });
-  hazeSettled = true;
-  const live = hazeReady && hazePointer.on && lenis.scroll < pinDistance;
-
-  // pass 1 — reads only
-  for (const o of hazeObjs) {
-    o.rect = null;
-    if ((live && o.obj.style.visibility !== "hidden") || o.h >= 0.01) {
-      o.rect = o.inEl.getBoundingClientRect();
-      o.scale = o.rect.width / (o.inEl.offsetWidth || 1); // stage scale × bump (rotation is small)
-    }
-  }
-
-  // pass 2 — writes only
-  for (const o of hazeObjs) {
-    const r = o.rect;
-    let target = 0;
-    if (live && r && o.obj.style.visibility !== "hidden") {
-      const near =
-        hazePointer.x > r.left - HAZE_R && hazePointer.x < r.right + HAZE_R && hazePointer.y > r.top - HAZE_R && hazePointer.y < r.bottom + HAZE_R;
-      target = near ? 1 : 0;
-    }
-    o.h += (target - o.h) * k;
-    if (Math.abs(target - o.h) > 0.004) hazeSettled = false;
-    if (o.h < 0.01 && target === 0) {
-      if (o.shown) {
-        o.copy.style.display = "none";
-        o.src.classList.remove("is-hazed");
-        o.shown = false;
-      }
-      continue;
-    }
-    if (!o.shown) {
-      o.copy.style.display = "block";
-      o.src.classList.add("is-hazed");
-      o.shown = true;
-    }
-    if (!r) continue;
-    // custom properties inherit, so setting them on .in drives both the cut-out and the twin
-    const st = o.inEl.style;
-    st.setProperty("--hx", `${((hazePointer.x - r.left) / o.scale).toFixed(1)}px`);
-    st.setProperty("--hy", `${((hazePointer.y - r.top) / o.scale).toFixed(1)}px`);
-    st.setProperty("--hr", `${(HAZE_R / o.scale).toFixed(1)}px`);
-    st.setProperty("--ha", (1 - o.h * 0.92).toFixed(3));
-    st.setProperty("--hs", (1 + o.h * 0.14).toFixed(3));
-    o.copy.style.opacity = o.h.toFixed(3);
-  }
-}
 
 /* -------------------------------------------------------------------------- */
 /* Mouse parallax on hero objects                                             */
@@ -683,9 +608,6 @@ function intro() {
     tl.add(emerge(el).eventCallback("onComplete", first ? () => float(el) : null), objStart + i * 0.075);
   });
 
-  // the cursor haze only wakes up once everything has landed
-  const landed = objStart + objIns.length * 0.075 + 1.5;
-  tl.add(() => (hazeReady = true), landed);
 
   // she pops up once most objects are in
   tl.add(() => type3d?.start(), objStart + 1.2)

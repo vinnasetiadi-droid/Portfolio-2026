@@ -144,15 +144,16 @@ const BLOCKS = {
     </div>`,
 
   // pictures floating at different depths (x / y / w in % of the stage); card: a UI card
-  // with the deck's blue shadow, rot: its tilt
+  // with the deck's blue shadow, rot: its tilt; d: 0 → it stays put. kit: a tidy board of
+  // UI pieces that rise in one after another
   stage: (b) => `${head(b)}
-    <div class="pb__stage" style="--r: ${b.ratio || "16/9"}${b.bg ? `; --bg: ${b.bg}` : ""}">
+    <div class="pb__stage${b.kit ? " pb__stage--kit" : ""}" style="--r: ${b.ratio || "16/9"}${b.bg ? `; --bg: ${b.bg}` : ""}">
       ${b.items
         .map(
-          (it) =>
+          (it, i) =>
             `<div class="stage__item${it.card ? " is-card" : ""}" style="left: ${it.x}%; top: ${it.y}%; width: ${it.w}%${
               it.rot ? `; --rot: ${it.rot}deg` : ""
-            }" data-scrub="depth" data-d="${it.d || 1}">${it.phone ? phoneTag(it.src) : mediaTag(it.src)}</div>`
+            }; --i: ${i}"${it.d === 0 ? "" : ` data-scrub="depth" data-d="${it.d || 1}"`}>${it.phone ? phoneTag(it.src) : mediaTag(it.src)}</div>`
         )
         .join("")}
     </div>`,
