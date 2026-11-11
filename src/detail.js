@@ -110,12 +110,20 @@ const BLOCKS = {
         .join("")}
     </div>`,
 
-  flow: (b) => `${lead(b)}
+  // screens in order; a step with several screens shows them as a small stack whose
+  // screens drift apart a little
+  flow: (b) => `${head(b)}
     <ol class="pb__flow" style="--n: ${b.items.length}">
       ${b.items
         .map(
           (it, i) => `<li class="flow" style="--i: ${i}">
-            <div class="pb__drift" data-scrub="drift" data-amp="${i % 2 ? -30 : 30}">${mediaTag(it.src, { cls: "flow__img" })}</div>
+            ${
+              Array.isArray(it.src)
+                ? `<div class="flow__stack">${it.src
+                    .map((src, k) => `<div class="pb__drift" data-scrub="drift" data-amp="${k % 2 ? -36 : 18}">${mediaTag(src, { cls: "flow__img" })}</div>`)
+                    .join("")}</div>`
+                : `<div class="pb__drift" data-scrub="drift" data-amp="${i % 2 ? -30 : 30}">${mediaTag(it.src, { cls: "flow__img" })}</div>`
+            }
             <h3 class="flow__title">${esc(it.title)}</h3>
             <p class="flow__text">${esc(it.text)}</p>
           </li>`
@@ -135,15 +143,16 @@ const BLOCKS = {
         .join("")}
     </div>`,
 
-  // pictures floating at different depths (x / y / w in % of the stage)
-  stage: (b) => `${lead(b)}
+  // pictures floating at different depths (x / y / w in % of the stage); card: a UI card
+  // with the deck's blue shadow, rot: its tilt
+  stage: (b) => `${head(b)}
     <div class="pb__stage" style="--r: ${b.ratio || "16/9"}${b.bg ? `; --bg: ${b.bg}` : ""}">
       ${b.items
         .map(
           (it) =>
-            `<div class="stage__item" style="left: ${it.x}%; top: ${it.y}%; width: ${it.w}%" data-scrub="depth" data-d="${it.d || 1}">${
-              it.phone ? phoneTag(it.src) : mediaTag(it.src)
-            }</div>`
+            `<div class="stage__item${it.card ? " is-card" : ""}" style="left: ${it.x}%; top: ${it.y}%; width: ${it.w}%${
+              it.rot ? `; --rot: ${it.rot}deg` : ""
+            }" data-scrub="depth" data-d="${it.d || 1}">${it.phone ? phoneTag(it.src) : mediaTag(it.src)}</div>`
         )
         .join("")}
     </div>`,
@@ -160,21 +169,7 @@ const BLOCKS = {
         .join("")}
     </div>`,
 
-  // print pieces: a pile that fans out side by side when it comes into view
-  spread: (b) => `${head(b)}
-    <div class="pb__spread" style="--n: ${b.items.length}">
-      ${b.items
-        .map((it, i) => {
-          // (starts piled in the middle of the 3-column grid: pulled toward its centre)
-          const rows = Math.ceil(b.items.length / 3);
-          const dx = (1 - (i % 3)) * 104;
-          const dy = ((rows - 1) / 2 - Math.floor(i / 3)) * 104;
-          return `<figure class="spread__item" style="--i: ${i}; --dx: ${dx}%; --dy: ${dy}%">${mediaTag(it.src)}<figcaption>${esc(it.label)}</figcaption></figure>`;
-        })
-        .join("")}
-    </div>`,
-
-  wall: (b) => `<div class="pb__wall" data-scrub="wall" data-key="${esc(b.key)}"></div>`,
+  wall: (b) => `${lead(b)}<div class="pb__wall" data-scrub="wall" data-key="${esc(b.key)}"></div>`,
   marquee: (b) => `${lead(b)}<div class="pb__marquee" data-key="${esc(b.key)}"></div>`,
 
   reel: (b) => {
@@ -200,23 +195,6 @@ const BLOCKS = {
               .join("")}</div>`
         )
         .join("")}
-    </div>`,
-
-  palette: (b) => `${lead(b)}
-    <div class="pb__palette">
-      ${b.items
-        .map(
-          (c, i) =>
-            `<div class="swatch${c.dark ? " is-light" : ""}" style="--c: ${c.hex}; --i: ${i}"><span class="swatch__name">${esc(c.name)}</span><code>${esc(
-              c.hex
-            )}</code></div>`
-        )
-        .join("")}
-    </div>`,
-
-  logos: (b) => `${lead(b)}
-    <div class="pb__logos">
-      ${b.items.map((src, i) => `<div class="logo" style="--i: ${i}">${mediaTag(src)}</div>`).join("")}
     </div>`,
 };
 

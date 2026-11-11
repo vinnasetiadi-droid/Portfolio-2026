@@ -9,7 +9,7 @@ import { gsap } from "gsap";
 const PREVIEWS = {
   web3: { src: "/assets/work/web3/collage.webp", label: "Web3 Landing Pages" },
   landing: { src: "/assets/work/accomy-lp/showcase.webp", label: "Accomy Landing Page" },
-  // (LMS: no pictures of the Ajari LMS yet → no card)
+  lms: { src: "/assets/work/learnxpert/laptop.webp", label: "LearnXpert" },
 };
 
 export function initPreviews(scope) {

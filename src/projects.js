@@ -1,7 +1,7 @@
 /**
  * Project pages — one entry per project, in the order of the Selected Work list.
- * Copy is rewritten from the portfolio deck (Figma "Page 5"); the pictures are the
- * deck's own assets, pulled out of the slides (public/assets/work/<project>/).
+ * Copy is rewritten from the portfolio deck (Figma "Page 5" / "Page 6"); the pictures
+ * are the deck's own assets, pulled out of the slides (public/assets/work/<project>/).
  *
  *  facts: [label, value] rows under the summary (value may contain line breaks)
  *  blocks: what the page is made of, top to bottom (rendered by src/detail.js):
@@ -12,16 +12,15 @@
  *    phones    screens in phones (long ones scroll inside)       { items, layout?: "row" | "track" | "split" }
  *    cards     feature cards (text, list and/or picture)         { cols, items: [{ title, text?, list?, img? }] }
  *    steps     a process, connected by a line that fills         { items: [{ title, text }] }
- *    flow      phone screens in order, with a caption each       { items: [{ src, title, text }] }
+ *    flow      screens in order, with a caption each (src may     { items: [{ src, title, text }] }
+ *              be a list: a small stack of screens per step)
  *    diagram   how the pieces connect                            { items: [{ title, text }] }
- *    stage     pictures floating at different depths            { ratio, bg?, items: [{ src, x, y, w, d, phone? }] }
+ *    stage     pictures floating at different depths            { ratio, bg?, items: [{ src, x, y, w, d, phone?, card?, rot? }] }
+ *              (card: a UI card with the deck's blue shadow, rot: its tilt in degrees)
  *    pair      two pictures drifting apart                       { items: [{ src, browser?, name? }] }
- *    spread    print pieces fanning out of a pile                 { items: [{ src, label }] }
- *    wall      SHOWCASE wall (long pages drifting up / down)     { key }
- *    marquee   SHOWCASE rows of posters gliding sideways         { key }
+ *    wall      SHOWCASE wall (pages / screens drifting up, down) { key }
+ *    marquee   SHOWCASE rows of posts gliding sideways           { key }
  *    grid      pictures in a grid, columns at different speeds   { cols, items }
- *    palette   brand colours                                     { items: [{ hex, name }] }
- *    logos     logo tiles that pop in                            { items }
  *    reel      SHOWCASE phone video + two browser videos (as on the home page)
  *  Any block can carry label / title / text for a heading.
  */
@@ -45,18 +44,33 @@ export const SHOWCASE = {
       (n) => `${W}/web3/lp-${n}.webp`
     ),
   },
-  posters: {
-    kind: "marquee",
-    rows: [
-      { items: [1, 2, 3, 4, 5, 6, 7].map((i) => `${W}/visual/p-0${i}.webp`).concat(`${W}/visual/p-tall.webp`), dur: 90 },
-      { items: [8, 9, 10, 11, 12, 13, 14].map((i) => `${W}/visual/p-${String(i).padStart(2, "0")}.webp`), dur: 80 },
-    ],
+  // screen galleries of the two LMS projects: tiles in columns, the hero screen in front
+  learnxpert: {
+    kind: "wall",
+    tiles: true,
+    cols: 5,
+    per: 4,
+    dur: 40,
+    bg: "#eef1f8",
+    front: `${W}/learnxpert/upskill.webp`,
+    pages: [...Array(20)].map((_, i) => `${W}/learnxpert/g-${String(i + 1).padStart(2, "0")}.webp`),
+  },
+  garuda: {
+    kind: "wall",
+    tiles: true,
+    cols: 5,
+    per: 4,
+    dur: 40,
+    bg: "#f7eeee",
+    front: `${W}/garuda/overview.webp`,
+    pages: [...Array(20)].map((_, i) => `${W}/garuda/g-${String(i + 1).padStart(2, "0")}.webp`),
   },
   social: {
     kind: "marquee",
     rows: [
       { label: "Accomy", logo: `${W}/visual/logo-accomy.svg`, items: [...Array(11)].map((_, i) => `${W}/visual/acc-${String(i + 1).padStart(2, "0")}.webp`), dur: 110 },
       { label: "Ruangguru", logo: `${W}/visual/logo-ruangguru.svg`, items: [...Array(10)].map((_, i) => `${W}/visual/rg-${String(i + 1).padStart(2, "0")}.webp`), dur: 100 },
+      { label: "Ajari", logo: `${W}/visual/logo-ajari.svg`, items: [...Array(16)].map((_, i) => `${W}/visual/aj-${String(i + 1).padStart(2, "0")}.webp`), dur: 130 },
     ],
   },
 };
@@ -139,6 +153,138 @@ export const PROJECTS = [
         items: [`${W}/accomy-lp/mobile-finance.webp`],
       },
       { type: "media", src: `${W}/accomy-lp/showcase.webp`, ratio: "16/9" },
+    ],
+  },
+  {
+    slug: "learnxpert",
+    title: "LearnXpert",
+    tags: "UI/UX · LMS · Design System",
+    summary:
+      "A learning & development platform where companies plan, build and run employee training — courses, learning journeys, assessments and analytics — with a workspace of its own for Admins, Trainers, Trainees and HR.",
+    facts: [
+      ["Role", "Sole designer — UI/UX & front-end"],
+      ["Timeline", "March – November 2026 (8 months)"],
+      ["Scope", "200+ screens · 4 roles"],
+      ["Tools", "Figma · Dyad · Claude Code"],
+    ],
+    blocks: [
+      { type: "media", src: `${W}/learnxpert/laptop.mp4`, poster: `${W}/learnxpert/laptop.webp`, ratio: "16/9" },
+      {
+        type: "text",
+        label: "Objective",
+        title: "One system for four very different roles.",
+        body:
+          "Design LearnXpert and build its front end: one consistent system for every role, with NISA, the AI assistant, working inside the daily flow instead of sitting beside it. The hard part was giving Admins, Trainers, Trainees and HR a workspace of their own while 200+ screens stay on one system.",
+      },
+      {
+        type: "stage",
+        ratio: "16/10",
+        bg: "linear-gradient(160deg, #eaf0fd 0%, #f4f7fe 55%, #fdfdff 100%)",
+        items: [
+          { src: `${W}/learnxpert/ipad.webp`, x: 10, y: 4, w: 70, d: 0.4 },
+          { src: `${W}/learnxpert/funnel.webp`, x: 8, y: 34, w: 19, d: 1.3, card: true, rot: -3 },
+          { src: `${W}/learnxpert/insights.webp`, x: 55, y: 15, w: 22, d: 1, card: true, rot: -3 },
+        ],
+      },
+      {
+        type: "steps",
+        label: "How I built it",
+        title: "From references to running code.",
+        items: [
+          { title: "Research", text: "Studied how 30 products handle course building and quizzes, from 50+ Mobbin references — Udemy, Teachable, Kajabi, Duolingo." },
+          { title: "Directions", text: "Explored four visual directions on three key pages — Home, Analytics and Upskill Studio — then picked one." },
+          { title: "One system", text: "Turned it into one design system, documented inside the product: tokens, components, charts and motion, in light and dark." },
+          { title: "Built with AI", text: "Built the screens in code with AI, in small scoped steps, with checklists and QA passes in the browser." },
+        ],
+      },
+      {
+        type: "cards",
+        label: "Key features",
+        title: "Everything a training team runs on.",
+        cols: 4,
+        items: [
+          { title: "Role-based dashboards", text: "Admin, Trainer, Trainee and HR each get their own, built from the same cards, charts and insights." },
+          { title: "NISA, the AI assistant", text: "Flags courses at risk and drafts courses, quizzes and assignments from one prompt." },
+          { title: "Upskill Studio", text: "Build courses as Topic → Module → Activity, with review, versions and a trainee preview." },
+          { title: "Journeys & analytics", text: "Learning journeys, quiz and assessment libraries, and analytics for courses, trainers and trainees." },
+          { title: "Quiz player", text: "A timer and progress while you answer, then results with the pass mark, NISA feedback and an answer review." },
+          { title: "Agenda & Circle", text: "A week view for every role, plus Circle for direct messages and course channels." },
+          { title: "People", text: "Add, edit and deactivate employees, upload them in bulk, and assign trainers, admins and roles." },
+          { title: "Reading material editor", text: "Block-based writing with AI menus and an employee preview, in English and Arabic." },
+        ],
+      },
+      {
+        type: "stage",
+        label: "Upskill Studio",
+        title: "A course from one prompt — checked before it goes live.",
+        text: "NISA drafts courses, quizzes and assignments from a single prompt; the trainer builds on it as Topic → Module → Activity and reviews everything before publishing.",
+        ratio: "16/10",
+        bg: "linear-gradient(160deg, #eaf0fd 0%, #f4f7fe 55%, #fdfdff 100%)",
+        items: [
+          { src: `${W}/learnxpert/create.webp`, x: 6, y: 9, w: 74, d: 0.4, card: true },
+          { src: `${W}/learnxpert/generating.webp`, x: 58, y: 52, w: 21, d: 1.3, card: true },
+        ],
+      },
+      { type: "wall", key: "learnxpert", label: "Screens", title: "200+ screens, one system." },
+    ],
+  },
+  {
+    slug: "sekolah-garuda",
+    title: "Sekolah Garuda",
+    tags: "UI/UX · EdTech · AI",
+    summary:
+      "A learning platform for Indonesian government secondary schools (LearnXpert Edu). One product serves students, teachers, school admins, the platform team and the government — from daily classes, assignments and grading to talent mapping.",
+    facts: [
+      ["Role", "Sole UI/UX Designer"],
+      ["Team", "Front-end team for API integration"],
+      ["Skills", "UI/UX Design · Design System"],
+      ["Tools", "Figma · Claude Code"],
+    ],
+    blocks: [
+      { type: "media", src: `${W}/garuda/recording.mp4`, poster: `${W}/garuda/recording.webp`, ratio: "16/10" },
+      {
+        type: "text",
+        label: "NISA, built in",
+        title: "An assistant for every seat in the system.",
+        body:
+          "NISA, the AI assistant, is part of the product rather than an add-on: it ranks each student’s priorities, helps teachers prepare material in NISA Lab and turns data from 38 provinces into insights for the government.",
+      },
+      {
+        type: "text",
+        label: "My role",
+        title: "Five roles, one design language.",
+        list: [
+          "Designed the experience for every role — Siswa, Guru, Admin, Superadmin and Pemerintah — on one design system.",
+          "Wrote the design language every screen follows (trustworthy, warm, calm and clear, targeting WCAG AA) and turned it into tokens.",
+          "Researched each flow with Mobbin references and wrote user scenarios, from school onboarding and Dapodik provisioning to empty states.",
+          "Designed NISA Lab, the AI workspace where teachers turn their own sources into ready-to-teach material.",
+          "Built 100+ pages as production-grade front end with Claude Code, ready for developers to connect the APIs.",
+        ],
+      },
+      {
+        type: "flow",
+        label: "NISA Lab",
+        title: "From one question to a ready-to-teach lesson.",
+        text: "How a teacher prepares material in NISA Lab, the AI workspace of Sekolah Garuda — from a single question to the format students meet in class.",
+        items: [
+          {
+            src: [`${W}/garuda/lab-home.webp`, `${W}/garuda/lab-materi.webp`],
+            title: "Start from a question",
+            text: "Ask NISA on the Lab home, or open the Ruang Materi of the chapter you are teaching.",
+          },
+          {
+            src: [`${W}/garuda/lab-room.webp`, `${W}/garuda/lab-library.webp`],
+            title: "Bring your own sources",
+            text: "Add textbooks, notes, videos and PDFs, or copy material from the Library. NISA answers only from what you tick.",
+          },
+          {
+            src: [`${W}/garuda/lab-slide.webp`, `${W}/garuda/lab-latihan.webp`],
+            title: "Pick how students meet it",
+            text: "Bacaan, Interaktif, Slide, Cetak or Refleksi — the same content in every format, so nothing gets rebuilt.",
+          },
+        ],
+      },
+      { type: "wall", key: "garuda", label: "Screens", title: "100+ pages, ready for the APIs." },
     ],
   },
   {
@@ -242,73 +388,6 @@ export const PROJECTS = [
           { title: "Card management", text: "Apply for a card, add money, check card details and earn referral rewards." },
           { title: "Identity, verified", text: "KYC with document upload and a PIN keeps every account secure." },
         ],
-      },
-      {
-        type: "pair",
-        bg: "linear-gradient(160deg, #efeaff 0%, #f7f4ff 60%, #fdf2f8 100%)",
-        items: [{ src: `${W}/miro/phones-duo.webp` }, { src: `${W}/miro/phones-iso.webp` }],
-      },
-    ],
-  },
-  {
-    slug: "codexfield",
-    title: "CodexField",
-    tags: "UI/UX · Web3 · AI",
-    summary:
-      "A Web3 creator platform that brings AI generation tools, a crypto wallet and on-chain quests together in one interface — for managing assets and keeping users engaged.",
-    facts: [
-      ["Role", "UI/UX Designer"],
-      ["Team", "Veronica Stevany — Creative Lead"],
-      ["Tools", "Figma"],
-    ],
-    blocks: [
-      {
-        type: "stage",
-        ratio: "16/9",
-        bg: "linear-gradient(160deg, #efeaff 0%, #f7f4ff 60%, #fdf2f8 100%)",
-        items: [
-          { src: `${W}/codexfield/ipad.webp`, x: 17, y: 6, w: 39, d: 0.5 },
-          { src: `${W}/codexfield/iphone.webp`, x: 50, y: 20, w: 33, d: 1.3 },
-        ],
-      },
-      {
-        type: "text",
-        label: "My role",
-        title: "From client wireframes to one consistent product.",
-        list: [
-          "Built the design system and kept the visuals consistent across every product module.",
-          "Created UI assets, illustrations and icons with AI tools, based on the client’s wireframes.",
-          "Refined interactions and visual hierarchy to match the product’s technical flow.",
-        ],
-      },
-      {
-        type: "cards",
-        label: "Key features",
-        title: "Four modules, one ecosystem.",
-        cols: 4,
-        items: [
-          { title: "Token transfer", text: "Send, receive and bridge tokens between networks without leaving the dashboard.", img: `${W}/codexfield/f-transfer.webp` },
-          { title: "Marketplace", text: "Publish, trade and deploy AI-generated code, templates and assets.", img: `${W}/codexfield/f-market.webp` },
-          { title: "AI Playground", text: "An interactive workspace to build, test and generate AI-driven code and assets.", img: `${W}/codexfield/f-playground.webp` },
-          { title: "Quests & ranks", text: "On-chain quests reward points for completed tasks — progression that keeps users coming back.", img: `${W}/codexfield/f-quest.webp` },
-        ],
-      },
-      { type: "media", src: `${W}/codexfield/overview.webp`, ratio: "16/9" },
-      {
-        type: "phones",
-        layout: "split",
-        label: "Also designed",
-        title: "AiBat",
-        text: "An AI-driven DeFi platform combining liquidity mining, cross-chain trading and a multi-level node reward system.",
-        items: [1, 2, 3].map((i) => `${W}/codexfield/aibat-${i}.webp`),
-      },
-      {
-        type: "phones",
-        layout: "split",
-        flip: true,
-        title: "Sentient PCDN",
-        text: "A DeFi and AI earning platform that pairs a staking-task system with a multi-level agent network.",
-        items: [1, 2, 3].map((i) => `${W}/codexfield/sentient-${i}.webp`),
       },
     ],
   },
@@ -430,109 +509,45 @@ export const PROJECTS = [
   {
     slug: "visual-content-design",
     title: "Visual Content Design",
-    tags: "Graphic Design · Marketing · Campaign",
+    tags: "Graphic Design · Social Media",
     summary:
-      "Digital visuals for Web3 brands — campaign posters for X, one-pagers, decks and print — many made with AI-assisted tools, plus five years of social media imaging for brands from corporate travel to edutech for kids.",
+      "Instagram posts for brands from corporate travel and edutech for children to AI in education — laid out in Figma, brought to life with digital imaging in Photoshop, with AI-generated assets or stock photos when they serve the idea.",
     facts: [
       ["Role", "Graphic Designer"],
+      ["Brands", "Accomy · Ruangguru · Ajari"],
       ["Team", "Veronica Stevany — Creative Lead\nIna Suwarni — Creative Lead"],
-      ["Pace", "1–3 hours per poster"],
-      ["Tools", "Figma · Photoshop · Illustrator · AI tools"],
+      ["Tools", "Figma · Photoshop · Illustrator · ChatGPT · Midjourney"],
     ],
     blocks: [
-      { type: "marquee", key: "posters" },
-      {
-        type: "text",
-        label: "My role",
-        title: "A new brand every hour, the same care every time.",
-        list: [
-          "Set the key visual direction and creative concept for each campaign.",
-          "Generated imagery with AI to build the visual foundation and the storytelling.",
-          "Kept layouts and design systems cohesive across every digital asset.",
-        ],
-      },
-      {
-        type: "steps",
-        label: "Process",
-        title: "From brief to poster in one to three hours.",
-        items: [
-          { title: "Key visual", text: "Define the key visual and layout direction from the content or campaign." },
-          { title: "Make the parts", text: "Generate supporting visuals with AI — 3D objects, textures — or illustrate them in Illustrator." },
-          { title: "Compose & refine", text: "Arrange the elements, set the lighting and typography, then polish the final poster." },
-        ],
-      },
-      {
-        type: "text",
-        label: "Challenge",
-        title: "Switching styles without losing the thread.",
-        body:
-          "Changing brand styles almost every hour is exhausting, but rewarding. It trained me to stay flexible and lean on clear design logic — so I can jump between styles without losing direction or quality.",
-      },
-      {
-        type: "spread",
-        label: "Print & presentation",
-        title: "Long-form, print-ready, multilingual.",
-        text: "One-pagers, whitepapers, brand decks and Google Slides — built for clear structure, readability and one consistent identity across digital and print, translated into multiple languages.",
-        items: [
-          { src: `${W}/visual/onepager-1.webp`, label: "One pager" },
-          { src: `${W}/visual/paper-1.webp`, label: "White paper" },
-          { src: `${W}/visual/trifold-1.webp`, label: "Trifold brochure" },
-          { src: `${W}/visual/slides-1.webp`, label: "Google Slides deck" },
-          { src: `${W}/visual/paper-3.webp`, label: "White paper" },
-          { src: `${W}/visual/onepager-3.webp`, label: "One pager · Korean" },
-        ],
-      },
+      { type: "marquee", key: "social" },
       {
         type: "text",
         label: "Digital imaging",
-        title: "Five years of feeds.",
+        title: "Posts made to stop the scroll.",
         body:
-          "Instagram posts designed between 2020 and 2025, from corporate travel to edutech for children. Figma for the layout, Photoshop for the imaging — and AI or stock images when they serve the idea.",
-      },
-      { type: "marquee", key: "social" },
-    ],
-  },
-  {
-    slug: "branding-projects",
-    title: "Branding Projects",
-    tags: "Brand Guideline · Logo",
-    summary:
-      "A brand identity for English Academy Juniors — Ruangguru’s English course for children aged 3–12 — with advertising posters for its online and offline launch, plus a collection of logos for Web3 projects.",
-    facts: [
-      ["Role", "Graphic Designer"],
-      ["Team", "Vostino Thanod — Creative Lead\nIna Suwarni — Creative Lead"],
-      ["Tools", "Illustrator · Photoshop"],
-    ],
-    blocks: [
-      { type: "media", src: `${W}/branding/ea-kv.webp`, ratio: "16/9" },
-      {
-        type: "text",
-        label: "English Academy Juniors",
-        title: "A brand kids want to play with — and parents trust.",
-        body:
-          "To launch its newest product, Ruangguru needed an identity that fits a young audience, plus posters to promote it online and offline. I created the brand guideline, the logo and the visual direction — a fresh, colourful palette that keeps everything playful and engaging for children.",
+          "A collection of Instagram posts designed since 2020 — from corporate travel visuals to edutech content for children and pieces on AI in education. I usually lay them out in Figma, build the digital imaging in Photoshop, and bring in AI-generated assets or stock photos when they support the idea.",
       },
       {
-        type: "palette",
-        items: [
-          { hex: "#724CF9", name: "Majorelle Blue" },
-          { hex: "#FF5C59", name: "Orange Red Crayola" },
-          { hex: "#C7EF00", name: "Arctic Lime", dark: true },
-          { hex: "#1AAF9E", name: "Keppel" },
-          { hex: "#F3FAF9", name: "Baby Powder", dark: true },
-          { hex: "#282828", name: "Eerie Black" },
-        ],
+        type: "grid",
+        label: "Accomy",
+        title: "Corporate travel, made friendly.",
+        cols: 4,
+        items: [...Array(11)].map((_, i) => `${W}/visual/acc-${String(i + 1).padStart(2, "0")}.webp`),
       },
-      { type: "media", src: `${W}/branding/ea-board.webp`, ratio: "4001/3049", fit: "contain", bg: "#ffffff" },
-      { type: "grid", cols: 3, items: [...Array(9)].map((_, i) => `${W}/branding/ea-${i + 1}.webp`) },
       {
-        type: "text",
-        label: "Web3 logo collection",
-        title: "Concept first, shapes second.",
-        body:
-          "Every logo starts with understanding the brand — its concept and purpose — before it becomes a visual form. I sketch several directions, then refine them in Illustrator, exploring shapes, meanings and colour. Timelines vary, so iterations stay quick while the final marks stay polished.",
+        type: "grid",
+        label: "Ruangguru",
+        title: "Edutech for kids, bright and playful.",
+        cols: 4,
+        items: [...Array(10)].map((_, i) => `${W}/visual/rg-${String(i + 1).padStart(2, "0")}.webp`),
       },
-      { type: "logos", items: [...Array(14)].map((_, i) => `${W}/branding/logo-${String(i + 1).padStart(2, "0")}.webp`) },
+      {
+        type: "grid",
+        label: "Ajari",
+        title: "AI in education, explained.",
+        cols: 4,
+        items: [...Array(16)].map((_, i) => `${W}/visual/aj-${String(i + 1).padStart(2, "0")}.webp`),
+      },
     ],
   },
 ];

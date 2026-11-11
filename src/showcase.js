@@ -1,9 +1,9 @@
 /**
  * Building blocks shared by the home gallery and the project pages:
- *  - a wall of long landing pages drifting up / down in alternating columns (with an
- *    optional picture in front); scrolling pushes the columns further apart and fades
- *    them out, so the picture in front is what stays
- *  - marquees: rows of posters gliding sideways, every other row the other way
+ *  - a wall of long landing pages (or screen tiles) drifting up / down in alternating
+ *    columns (with an optional picture in front); scrolling pushes the columns further
+ *    apart and fades them out, so the picture in front is what stays
+ *  - marquees: rows of posts gliding sideways, every other row the other way
  *  - browser windows and phones around a picture or video
  * Continuous motion runs as CSS animations (compositor only); the scroll-driven parts
  * take p = 0 → 1 while the element crosses the screen.
@@ -60,18 +60,22 @@ export function loadWhenNear(el, root = null) {
   return io;
 }
 
-/** Wall of long landing pages: columns drift up / down (CSS), the scroll adds to it. */
-export function buildWall(el, { pages, front, cols = 6 }) {
+/** Wall of long landing pages (or, with tiles, screen shots): columns drift up / down
+ *  (CSS), the scroll adds to it. per: pictures per column; dur: the slowest loop (s). */
+export function buildWall(el, { pages, front, cols = 6, per = 2, tiles = false, dur = 64, bg = "" }) {
   const html = [];
   for (let c = 0; c < cols; c++) {
-    const pair = [pages[(c * 2) % pages.length], pages[(c * 2 + 1) % pages.length]];
-    const set = pair.map((src) => `<img class="wall__page" data-src="${esc(src)}" alt="" decoding="async" />`).join("");
+    const set = [...Array(per)]
+      .map((_, k) => `<img class="wall__page" data-src="${esc(pages[(c * per + k) % pages.length])}" alt="" decoding="async" />`)
+      .join("");
     // (two copies: the track loops by sliding exactly one copy)
     html.push(
-      `<div class="wall__col" data-dir="${c % 2 ? "down" : "up"}"><div class="wall__track" style="--dur: ${64 + (c % 3) * 12}s">${set}${set}</div></div>`
+      `<div class="wall__col" data-dir="${c % 2 ? "down" : "up"}"><div class="wall__track" style="--dur: ${dur + (c % 3) * 12}s">${set}${set}</div></div>`
     );
   }
   el.classList.add("wall");
+  if (tiles) el.classList.add("wall--tiles");
+  if (bg) el.style.background = bg;
   el.style.setProperty("--cols", cols);
   el.innerHTML = `<div class="wall__cols">${html.join("")}</div>${
     front ? `<img class="wall__front" data-src="${esc(front)}" alt="" decoding="async" />` : ""
