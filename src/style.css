@@ -122,6 +122,13 @@ ul {
   will-change: transform;
 }
 
+/* split paragraphs (src/split.js): a word never breaks — not even at its hyphen
+   ("AI-powered") — so the measured lines are the lines you see */
+[data-split] .w,
+[data-split] .line__in {
+  white-space: nowrap;
+}
+
 /* letters (src/text-fx.js): words never break, each letter moves on its own */
 .wd {
   display: inline-block;
