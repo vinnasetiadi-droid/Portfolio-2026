@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vinnawati — UI/UX & Graphic Designer</title>
+    <meta name="description" content="Portfolio of Vinnawati — UI/UX and graphic designer exploring how AI makes design workflows faster, smarter and more flexible." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@84,800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Tangerine:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body class="is-loading">
+    <!-- Loader -->
+    <!-- Loader: sits on the hero's own wall (texture, leaf shadows, dots). Design words
+         fade in around the bar; when loading is done they float up and the objects rise. -->
+    <div class="loader" aria-hidden="true">
+      <div class="loader__words">
+        <span class="loader__word" style="--x: 12%; --y: 16%; --d: 0.15s">Packaging</span>
+        <span class="loader__word" style="--x: 50%; --y: 11%; --d: 0.6s">Design System</span>
+        <span class="loader__word" style="--x: 86%; --y: 18%; --d: 0.35s">Logo</span>
+        <span class="loader__word" style="--x: 8%; --y: 50%; --d: 0.9s">Poster</span>
+        <span class="loader__word" style="--x: 90%; --y: 48%; --d: 0.25s">User Flow</span>
+        <span class="loader__word" style="--x: 16%; --y: 82%; --d: 0.5s">Typography</span>
+        <span class="loader__word" style="--x: 52%; --y: 88%; --d: 1.0s">Wireframe</span>
+        <span class="loader__word" style="--x: 84%; --y: 80%; --d: 0.75s">Prototype</span>
+      </div>
+      <div class="loader__inner" data-loader-text>
+        <div class="loader__bar"><span data-loader-bar></span></div>
+      </div>
+    </div>
+
+    <!-- Nav: appears (with a blurred bar) once you start scrolling -->
+    <header class="nav" data-nav>
+      <a href="#top" class="nav__brand">VINNAWATI<span>.DESIGN</span></a>
+      <nav class="nav__links" aria-label="Main">
+        <a href="#about">ABOUT</a>
+        <a href="#experience">EXPERIENCE</a>
+        <a href="#work">WORK</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+    </header>
+
+    <!-- "wave blur" used by the cursor haze on the cover objects (src/main.js) -->
+    <svg class="svg-defs" aria-hidden="true" focusable="false">
+      <!-- static noise: an animated one is re-rendered on the CPU every frame (heavy);
+           the wave still moves with the cursor + swell (main.js) -->
+      <filter id="haze-wave" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.007 0.012" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="78" xChannelSelector="R" yChannelSelector="G" result="waved" />
+        <feGaussianBlur in="waved" stdDeviation="13" />
+      </filter>
+    </svg>
+
+    <main id="top">
+      <!-- ============ HERO (assets from Figma "1 PORTFOLIO - COVER") ============ -->
+      <div class="hero-pin" data-hero-pin>
+      <section class="hero" data-hero>
+        <!-- paper texture: clipped to the hero and faded into the dotted page background -->
+        <div class="hero__bg">
+          <div class="stage">
+            <!-- background layers (no curve) -->
+            <div class="bg-wall" data-bg>
+              <div class="bg-wall__in"><img src="/assets/cover/wall-bg.webp" alt="" /></div>
+            </div>
+            <div class="bg-tiles" data-bg>
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: -217.17px; top: 0" />
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: 600.86px; top: 0" />
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: 1419.72px; top: 0" />
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: -225.51px; top: 538.21px" />
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: 592.53px; top: 538.21px" />
+              <img src="/assets/cover/paper-grid.webp" alt="" style="left: 1411.38px; top: 538.21px" />
+            </div>
+            <div class="bg-leaves" data-bg>
+              <div class="bg-leaves__in"><img src="/assets/cover/leaves-shadow.webp" alt="" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D objects: never clipped; they fade out on scroll (main.js) -->
+        <div class="stage stage--fg">
+          <!-- objects: [data-curve] = bends with scroll, .par = mouse parallax, .in = intro/float -->
+
+          <div class="obj obj--green" data-vis="11 15 0 24" data-depth="0.5" style="left: -46px; top: -20px; width: 381px; height: 540px">
+            <div class="par"><div class="in">
+              <div class="green-mask">
+                <div class="green-paper">
+                  <div class="green-paper__img"><img src="/assets/cover/green-paper.webp" alt="" /></div>
+                </div>
+                <div class="green-curl"><img src="/assets/cover/green-paper-curl.svg" alt="" /></div>
+              </div>
+            </div>
+            <!-- the "m" + pen curve are printed on the paper: same object, they move with it -->
+            <div class="in in--flat" style="inset: auto; left: 63.5px; top: 60.68px; width: 269.5px; height: 302.32px">
+              <div class="m-mark">
+                <span class="m-mark__box"></span>
+                <span class="m-mark__handle m-mark__handle--soft" style="left: 224.64px; top: 23.51px"></span>
+                <span class="m-mark__handle" style="left: 59.7px; top: 23.51px"></span>
+                <span class="m-mark__handle" style="left: 224.64px; top: 192.46px"></span>
+                <span class="m-mark__handle" style="left: 59.7px; top: 192.46px"></span>
+                <span class="m-mark__letter">m</span>
+              </div>
+            </div>
+            <div class="in in--flat" style="inset: auto; left: 252.5px; top: 33px; width: 109.5px; height: 108.5px"><img class="pen-curve" src="/assets/cover/pen-curve.svg" alt="" /></div>
+            </div>
+          </div>
+
+          <div class="obj" data-depth="1.2" style="left: 1695.21px; top: 543px; width: 280.27px; height: 338px">
+            <div class="par"><div class="in"><img class="fill" src="/assets/cover/image-card.webp" alt="" /></div></div>
+          </div>
+
+          <div class="obj" data-vis="72 66 66 83" data-depth="1.4" style="left: 1445px; top: -102px; width: 554px; height: 554px">
+            <div class="par"><div class="in"><img class="fill fill--cover" src="/assets/cover/figma-logo.webp" alt="" /></div></div>
+          </div>
+
+          <div class="obj obj--pill-uiux" data-depth="1.6" style="left: 452px; top: 136px; width: 362px; height: 133px">
+            <div class="par"><div class="in">
+              <div class="pill pill--pink"><img src="/assets/cover/pill.webp" alt="" data-proxy-tint="#fdb0cf" /></div>
+              <p class="pill__label" style="left: 34px; top: 43px; font-size: 42px; letter-spacing: -0.84px; opacity: 0.65">UI/UX DESIGN</p>
+            </div></div>
+          </div>
+
+          <div class="obj obj--palette" data-depth="0.8" style="left: 1517px; top: 412px; width: 428px; height: 56px">
+            <div class="par"><div class="in">
+              <div class="palette__bar"></div>
+              <img class="palette__dots" src="/assets/cover/slider-dots.svg" alt="" />
+              <p class="hex" style="left: 0">4285F4</p>
+              <p class="hex" style="left: 167px">5BDE6F</p>
+              <p class="hex" style="left: 336px">FE7EB2</p>
+            </div></div>
+          </div>
+
+          <div class="obj obj--cursor" data-vis="70 70 70 70" data-depth="2" style="left: 1281px; top: 488px; width: 423.36px; height: 423.36px">
+            <div class="par"><div class="in">
+              <!-- real 3D model (src/cursor3d.js); the PNG is only used as the glass-refraction proxy -->
+              <div class="cursor3d" data-cursor3d data-proxy="/assets/cover/cursor.webp"></div>
+            </div></div>
+          </div>
+
+          <div class="obj" data-depth="2.4" style="left: 279px; top: 255px; width: 112px; height: 115px">
+            <div class="par"><div class="in"><img class="fill round" src="/assets/cover/orb-blue.webp" alt="" style="border-radius: 56px" /></div></div>
+          </div>
+
+          <div class="obj" data-vis="0 39 0 0" data-depth="2.2" style="left: 1210px; top: 964px; width: 129px; height: 144px">
+            <div class="par"><div class="in"><img class="fill" src="/assets/cover/orb-blue-2.webp" alt="" /></div></div>
+          </div>
+
+          <div class="obj obj--role" data-depth="1.1" style="left: 1083px; top: 46.18px; width: 369.55px; height: 181.82px">
+            <div class="par"><div class="in">
+              <div class="role-card">
+                <p class="role-card__title">Looking for role in...</p>
+                <div class="role-card__row">
+                  <span class="role-card__label">
+                    <span class="role-card__icon"><img src="/assets/cover/icon-graphic.svg" alt="" style="left: 6.25%; top: 4.16%; width: 89.59%; height: 91.68%" /></span>
+                    Graphic Design
+                  </span>
+                  <img class="role-card__close" src="/assets/cover/icon-close.svg" alt="" />
+                </div>
+                <div class="role-card__row">
+                  <span class="role-card__label">
+                    <span class="role-card__icon"><img src="/assets/cover/icon-uikit.svg" alt="" style="left: 0; top: 16.67%; width: 100%; height: 66.66%" /></span>
+                    UI/UX Design
+                  </span>
+                  <img class="role-card__close" src="/assets/cover/icon-close-2.svg" alt="" />
+                </div>
+              </div>
+            </div></div>
+          </div>
+
+          <div class="obj" data-depth="2.6" style="left: 1010px; top: 137px; width: 44.15px; height: 90.68px">
+            <div class="par"><div class="in">
+              <div class="pinkbar pinkbar--a"><div class="pinkbar__clip"><div class="pinkbar__box"><div class="pinkbar__img" style="mask-position: 45.891px 41.604px; -webkit-mask-position: 45.891px 41.604px"><img src="/assets/cover/pink-bar.webp" alt="" /></div></div></div></div>
+            </div></div>
+          </div>
+
+          <div class="obj" data-depth="2.6" style="left: 398px; top: 680px; width: 26px; height: 55px">
+            <div class="par"><div class="in">
+              <div class="pinkbar pinkbar--b"><div class="pinkbar__clip"><div class="pinkbar__box"><div class="pinkbar__img" style="mask-position: 36.78px 39.256px; -webkit-mask-position: 36.78px 39.256px"><img src="/assets/cover/pink-bar.webp" alt="" /></div></div></div></div>
+            </div></div>
+          </div>
+
+          <div class="obj obj--toolbar" data-depth="1.5" style="left: 561px; top: 815px; width: 108px; height: 323px">
+            <div class="par"><div class="in">
+              <div class="toolbar"><img src="/assets/cover/toolbar.webp" alt="" data-proxy-tint="#cde9b8" /></div>
+            </div></div>
+          </div>
+
+
+          <div class="obj obj--monitor" data-vis="12 0 0 5" data-depth="1.3" style="left: 47px; top: 655px; width: 348.74px; height: 376px">
+            <div class="par"><div class="in">
+              <img class="monitor__img" src="/assets/cover/monitor.webp" alt="" />
+              <div class="monitor__screen"></div>
+            </div></div>
+          </div>
+
+          <div class="obj obj--handles" data-depth="0.8" style="left: 18px; top: 548px; width: 380px; height: 99px">
+            <div class="par"><div class="in">
+              <div class="handles__bar"></div>
+              <div class="handles__svg"><img src="/assets/cover/slider-handles.svg" alt="" /></div>
+              <p class="hex" style="left: 1px; top: 80px">9BE5A7</p>
+              <p class="hex" style="left: 327px; top: 80px">18A0FB</p>
+            </div></div>
+          </div>
+
+          <div class="obj obj--pill-design" data-depth="1.8" style="left: 990px; top: 870px; width: 237px; height: 87px">
+            <div class="par"><div class="in">
+              <div class="pill pill--green"><img src="/assets/cover/pill.webp" alt="" data-proxy-tint="#b6ecc2" /></div>
+              <p class="pill__label" style="left: 29px; top: 19px; font-size: 44px; letter-spacing: 0.88px">DESIGN</p>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- soft light behind the avatar once she's up -->
+        <div class="hero__glow" data-hero-glow aria-hidden="true"><div class="hero__glow-in"></div></div>
+
+        <!-- 3D glass typography + avatar (real-time WebGL, models exported from Blender/Tripo) -->
+        <h1 class="sr-only">Branding &amp; User Interface works by Vinnawati</h1>
+        <div class="hero__type3d" data-type3d data-hero-fade aria-hidden="true"></div>
+
+        <!-- greeting, revealed above her head after the bump -->
+        <div class="hero__greet" data-greet>
+          <p class="hero__greet-title"><span class="line"><span class="line__in">Hello, I'm Vinna</span></span></p>
+          <p class="hero__greet-title hero__greet-title--sub"><span class="line"><span class="line__in">Welcome to my portfolio</span></span></p>
+        </div>
+
+        <div class="hero__scroll eyebrow" data-hero-scroll aria-hidden="true"><span data-hud>SCROLL <span>↓</span></span></div>
+      </section>
+      </div>
+
+      <!-- ============ ABOUT (from Figma "Desktop - 1") ============ -->
+      <section class="about section" id="about">
+        <div class="section__head">
+          <p class="eyebrow" data-curve data-reveal="scramble">(01) ABOUT</p>
+          <p class="eyebrow" data-curve data-reveal="scramble">DESIGN × AI</p>
+        </div>
+        <div class="about__grid">
+          <figure class="about__avatar" data-curve data-reveal="card">
+            <div class="about__avatar-in">
+              <img src="/assets/about/vinna.webp" alt="Vinnawati at her laptop, in a green sweater" />
+            </div>
+          </figure>
+          <div class="about__text">
+            <p class="big-text" data-split>I explore how AI can make design workflows faster, smarter, and more flexible.</p>
+            <p class="big-text big-text--muted" data-split>From <b data-preview="web3">Web3</b> and <b>LMS</b> to <b data-preview="landing">landing pages</b>, I combine design craft with AI-powered tools to turn concepts into digital experiences.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ EXPERIENCE (from Figma frame "2") ============ -->
+      <section class="xp section" id="experience">
+        <div class="section__head">
+          <p class="eyebrow" data-curve data-reveal="scramble">(02) EXPERIENCE</p>
+          <p class="eyebrow" data-curve data-reveal="scramble">2019 — NOW</p>
+        </div>
+        <div class="xp__grid">
+          <h2 class="big-text xp__intro" aria-label="Where I’ve worked so far.">
+            <span class="line"><span class="line__in">Where I’ve</span></span>
+            <span class="line"><span class="line__in">worked</span></span>
+            <span class="line"><span class="line__in">so far.</span></span>
+          </h2>
+          <ul class="xp__list">
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/ajari.webp" alt="Ajari logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">UI/UX &amp; Graphic Designer</span><span class="xp__co">Ajari<span class="xp__ind">LMS powered with AI</span></span></span>
+              <span class="xp__date">2026 – Present</span>
+            </div>
+            <p class="xp__desc">I’m designing a Learning Management System (LMS) dashboard and crafting social media assets for Ajari, while vibecoding with Claude &amp; Cursor to find faster, more intuitive ways to ship ideas into code.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/thirdlab.webp" alt="Thirdlab Studio logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">Graphic Design &amp; UI/UX Designer</span><span class="xp__co">Thirdlab Studio<span class="xp__ind">Web3 &amp; Blockchain Agency</span></span></span>
+              <span class="xp__date">July 2024 – October 2025</span>
+            </div>
+            <p class="xp__desc">I designed interfaces for NFT marketplaces, crypto payment platforms, and mobile dApps, plus branding, design systems, and campaign visuals for AI and blockchain startups, and a white-label hotel and flight booking platform.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/moflip.webp" alt="MOFLIP Digital logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">UI/UX Designer</span><span class="xp__co">MOFLIP Digital<span class="xp__ind">Event Ticketing</span></span></span>
+              <span class="xp__date">November 2023 – June 2024</span>
+            </div>
+            <p class="xp__desc">I designed landing pages and match visuals for Indonesian football and basketball teams, and built ticketing interfaces for sports and concert events, including user and seller dashboards, closely with the developers.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/simtek.webp" alt="SIMTEK Consulting logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">UI/UX Design Intern</span><span class="xp__co">SIMTEK Consulting<span class="xp__ind">Crypto Creative Agency</span></span></span>
+              <span class="xp__date">June 2023 – October 2023</span>
+            </div>
+            <p class="xp__desc">I created wireframes for a crypto application and helped build and maintain the company’s design system to keep the product consistent.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/ruangguru.webp" alt="Ruangguru logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">Graphic Designer</span><span class="xp__co">Ruangguru<span class="xp__ind">EduTech</span></span></span>
+              <span class="xp__date">June 2021 – November 2022</span>
+            </div>
+            <p class="xp__desc">I created digital ads and social media visuals for Skill Academy, Ruangkerja, and English Academy, mentored interns, and developed brand guidelines to keep all marketing materials consistent.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/mekari.webp" alt="Mekari logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">Graphic Design Intern</span><span class="xp__co">Mekari<span class="xp__ind">SaaS</span></span></span>
+              <span class="xp__date">November 2020 – February 2021</span>
+            </div>
+            <p class="xp__desc">I created social media visuals for a SaaS company and designed flyers and promotional materials for the sales team.</p>
+          </li>
+          <li class="xp__item" data-curve data-reveal="row">
+            <div class="xp__head">
+              <span class="xp__logo"><img src="/assets/experience/mata.webp" alt="MATA Studio logo" width="48" height="48" /></span>
+              <span class="xp__name"><span class="xp__role">Graphic Design Intern</span><span class="xp__co">MATA Studio<span class="xp__ind">Creative Agency</span></span></span>
+              <span class="xp__date">July 2019 – September 2019</span>
+            </div>
+            <p class="xp__desc">I built complete branding projects from scratch for F&amp;B and hospitality clients, from logos to brand identity and applications, and drew vector illustrations for packaging.</p>
+          </li>
+          </ul>
+        </div>
+      </section>
+      <!-- ============ WORK (template — projects get filled in later) ============ -->
+      <section class="work section" id="work">
+        <div class="section__head">
+          <p class="eyebrow" data-curve data-reveal="scramble">(03) SELECTED WORK</p>
+          <p class="eyebrow" data-curve data-reveal="scramble">2020 — 2025</p>
+        </div>
+        <!-- Project showcase (editorial gallery, à la mariavasilyeva.com/work/sierra).
+             To fill a slot: put the file path in data-src (.jpg/.png/.webp → image,
+             .mp4/.webm → muted looping video). Empty slots show a placeholder. -->
+        <div class="pw__list">
+        <article class="pw" data-project="accomy-landing-page">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">Accomy Landing Page</h3>
+              <span class="pw__tags">UI/UX · Landing Page</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media" style="--r: 16/9" data-slide="up" data-src="/assets/work/landing/accomy-macbook.mp4" data-poster="/assets/work/landing/accomy-macbook.webp"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="web3-landing-pages">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">Web3 Landing Pages</h3>
+              <span class="pw__tags">UI/UX · Web3 · Responsive</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--reel">
+              <figure class="pw__media pw__media--phone" data-slide="left" data-src="/assets/work/landing/taptasy-iphone.mp4" data-poster="/assets/work/landing/taptasy-iphone.webp"><div class="pw__in"></div></figure>
+              <div class="pw__stack">
+                <figure class="pw__media pw__media--browser" data-slide="right" data-src="/assets/work/web3/reel-feline.mp4" data-poster="/assets/work/web3/reel-feline.webp"><div class="pw__in"></div></figure>
+                <figure class="pw__media pw__media--browser" data-slide="right" data-src="/assets/work/web3/reel-content.mp4" data-poster="/assets/work/web3/reel-content.webp"><div class="pw__in"></div></figure>
+              </div>
+            </div>
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media pw__media--show" style="--r: 16/9" data-slide="up" data-zoom="0" data-showcase="web3"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="miro-mcard">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">MIRO M-Card</h3>
+              <span class="pw__tags">Mobile App · Crypto Payment</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media" style="--r: 16/9" data-slide="up" data-src="/assets/work/miro/mcard-phone.mp4" data-poster="/assets/work/miro/mcard-phone.webp"><div class="pw__in"></div></figure>
+            </div>
+            <div class="pw__row pw__row--two">
+              <figure class="pw__media pw__media--contain pw__media--lilac" style="--r: 4/3" data-slide="left" data-src="/assets/work/miro/phones-duo.webp"><div class="pw__in"></div></figure>
+              <figure class="pw__media pw__media--contain pw__media--lilac" style="--r: 4/3" data-slide="right" data-src="/assets/work/miro/phones-iso.webp"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="codexfield">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">CodexField</h3>
+              <span class="pw__tags">UI/UX · Web3 · AI</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media" style="--r: 16/9" data-slide="up" data-src="/assets/work/codexfield/overview.webp"><div class="pw__in"></div></figure>
+            </div>
+            <div class="pw__row pw__row--two">
+              <figure class="pw__media pw__media--contain pw__media--lilac" style="--r: 4/3" data-slide="left" data-src="/assets/work/codexfield/ipad.webp"><div class="pw__in"></div></figure>
+              <figure class="pw__media pw__media--contain pw__media--lilac" style="--r: 4/3" data-slide="right" data-src="/assets/work/codexfield/iphone.webp"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="accomy-booking-platform">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">Accomy Booking Platform</h3>
+              <span class="pw__tags">UI/UX · Web App · Booking</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media" style="--r: 16/9" data-slide="up" data-src="/assets/work/accomy/overview.webp"><div class="pw__in"></div></figure>
+            </div>
+            <div class="pw__row pw__row--two">
+              <figure class="pw__media pw__media--top" style="--r: 16/10" data-slide="left" data-src="/assets/work/accomy/home.webp"><div class="pw__in"></div></figure>
+              <figure class="pw__media" style="--r: 16/10" data-slide="right" data-src="/assets/work/accomy/components.webp"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="visual-content-design">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">Visual Content Design</h3>
+              <span class="pw__tags">Marketing · Campaign</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media pw__media--show" style="--r: 16/7" data-slide="up" data-zoom="0" data-showcase="posters"><div class="pw__in"></div></figure>
+            </div>
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media pw__media--show" style="--r: 16/9" data-slide="up" data-zoom="0" data-showcase="social"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        <article class="pw" data-project="branding-projects">
+          <header class="pw__head" data-curve data-reveal="card">
+            <div class="pw__head-in">
+              <h3 class="pw__title">Branding Projects</h3>
+              <span class="pw__tags">Brand Guideline · Logo</span>
+            </div>
+          </header>
+          <div class="pw__gallery">
+            <div class="pw__row pw__row--fw">
+              <figure class="pw__media" style="--r: 16/9" data-slide="up" data-src="/assets/work/branding/ea-kv.webp"><div class="pw__in"></div></figure>
+            </div>
+            <div class="pw__row pw__row--two">
+              <figure class="pw__media pw__media--contain pw__media--white" style="--r: 4/3" data-slide="left" data-src="/assets/work/branding/ea-board.webp"><div class="pw__in"></div></figure>
+              <figure class="pw__media pw__media--contain pw__media--paper" style="--r: 4/3" data-slide="right" data-src="/assets/work/branding/logos.webp"><div class="pw__in"></div></figure>
+            </div>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section class="contact section" id="contact">
+        <div class="section__head">
+          <p class="eyebrow" data-curve data-reveal="scramble">(04) CONTACT</p>
+          <p class="eyebrow" data-curve data-reveal="scramble">AVAILABLE 2026</p>
+        </div>
+        <h2 class="contact__title">
+          <span class="line" data-curve><span class="line__in">Let’s Make</span></span>
+          <span class="line" data-curve><span class="line__in">Something</span></span>
+          <span class="line" data-curve><span class="line__in"><em class="grad">Good</em> Together</span></span>
+        </h2>
+        <div class="contact__links" data-curve data-reveal="stagger">
+          <a href="mailto:vinnasetiadi@gmail.com" class="btn">vinnasetiadi@gmail.com</a>
+          <a href="https://www.linkedin.com/in/vinnawati" class="btn btn--ghost" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://www.behance.net/vinnaw" class="btn btn--ghost" target="_blank" rel="noopener">Behance ↗</a>
+          <a href="https://drive.google.com/drive/folders/1H4J7MecKSnZxswszdzWWoWvl670d_DHd?usp=share_link" class="btn btn--ghost" target="_blank" rel="noopener">Portfolio PDF ↓</a>
+        </div>
+        <footer class="footer" data-curve data-reveal="scramble">
+          <span>© 2026 VINNAWATI</span>
+          <span>DESIGNED WITH CRAFT + AI</span>
+          <a href="#top">BACK TO TOP ↑</a>
+        </footer>
+      </section>
+    </main>
+
+    <script type="module">
+      // let the loader paint first (its CSS animations then run on the compositor,
+      // smooth even while the heavy 3D setup keeps the main thread busy)
+      // (+ a timer fallback: background tabs don't run animation frames)
+      let started = false;
+      const start = () => !started && (started = true) && import("/src/main.js");
+      requestAnimationFrame(() => setTimeout(start));
+      setTimeout(start, 400);
+    </script>
+  </body>
+</html>
